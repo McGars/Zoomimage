@@ -25,18 +25,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ZoomImageController zoomImageController;
 
-    List<String> urlImages = new ArrayList<>();
+    List<ZoomPhotoPagerAdapter.IPhoto> urlImages = new ArrayList<>();
     List<ImageView> views = new ArrayList<>();
-    private ViewGroup activityMain;
+    private ViewGroup container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        activityMain = (ViewGroup) findViewById(R.id.activity_main);
+        container = (ViewGroup) findViewById(R.id.container);
 
-        initImageLoader(MainActivity.this);
+        initImageLoader(this);
 
         fitImages();
 
@@ -64,30 +64,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void fitImages() {
-        urlImages.add("http://images4.fanpop.com/image/photos/23100000/-Nature-god-the-creator-23175770-670-446.jpg");
-        urlImages.add("http://fantasyartdesign.com/free-wallpapers/imgs/mid/decktop-Dino-game-m.jpg");
-        urlImages.add("http://images4.fanpop.com/image/photos/18200000/Lovely-nature-god-the-creator-18227423-500-333.jpg");
+        urlImages.add(new ZoomPhotoPagerAdapter.Photo(
+                "http://images4.fanpop.com/image/photos/23100000/-Nature-god-the-creator-23175770-670-446.jpg",
+                "http://images4.fanpop.com/image/photos/23100000/-Nature-god-the-creator-23175770-670-446.jpg"
+        ));
+        urlImages.add(new ZoomPhotoPagerAdapter.Photo(
+                "http://fantasyartdesign.com/free-wallpapers/imgs/mid/decktop-Dino-game-m.jpg",
+                "http://fantasyartdesign.com/free-wallpapers/imgs/mid/decktop-Dino-game-m.jpg"
+        ));
+        urlImages.add(new ZoomPhotoPagerAdapter.Photo(
+                "http://images4.fanpop.com/image/photos/18200000/Lovely-nature-god-the-creator-18227423-500-333.jpg",
+                "http://images4.fanpop.com/image/photos/18200000/Lovely-nature-god-the-creator-18227423-500-333.jpg"
+        ));
 
         views.add((ImageView) findViewById(R.id.ivTest));
         views.add((ImageView) findViewById(R.id.ivTest2));
         views.add((ImageView) findViewById(R.id.ivTest3));
 
-        for (ImageView view : views) {
+        for (int i = 0; i < views.size(); i++) {
+            ImageView view = views.get(i);
             view.setOnClickListener(this);
+            ImageLoader.getInstance().displayImage(urlImages.get(i).getPreview(), view);
         }
     }
 
     @Override
     public void onClick(View v) {
-
-        int position = activityMain.indexOfChild(v);
-
-        List<ZoomPhotoPagerAdapter.IPhoto> list = new ArrayList<>();
-        list.add(new ZoomPhotoPagerAdapter.Photo(
-                "https://graceologydotcom.files.wordpress.com/2014/04/perma-glory.jpg",
-                "http://fantasyartdesign.com/free-wallpapers/imgs/mid/decktop-Dino-game-m.jpg"
-        ));
-        zoomImageController.setPhotos(views, list);
+        int position = container.indexOfChild(v);
+        zoomImageController.setPhotos(views, urlImages);
         zoomImageController.enter(position);
     }
 
@@ -96,6 +100,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(zoomImageController.onBackPressed())
             return;
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        zoomImageController.onDestroy();
     }
 
     /**

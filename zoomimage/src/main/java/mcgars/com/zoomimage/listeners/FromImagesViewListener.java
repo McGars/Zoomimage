@@ -1,6 +1,7 @@
 package mcgars.com.zoomimage.listeners;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -35,7 +36,6 @@ public class FromImagesViewListener<ID> implements ViewsCoordinator.OnRequestVie
         // or it is not fully visible than we should scroll to it at first.
         mId = id;
         int position = mTracker.getPositionForId(id);
-
         if (position == ViewsTracker.NO_POSITION) {
             return; // Nothing we can do
         }
@@ -51,7 +51,6 @@ public class FromImagesViewListener<ID> implements ViewsCoordinator.OnRequestVie
             if (state == 0f && isLeaving) {
                 mId = null;
             }
-
             ImageView imageView = images.get(position);
             imageView.setVisibility(state == 0f && isLeaving ? View.VISIBLE : View.INVISIBLE);
         }
