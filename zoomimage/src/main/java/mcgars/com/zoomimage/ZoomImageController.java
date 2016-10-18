@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,8 +107,10 @@ public class ZoomImageController implements ViewPositionAnimator.PositionUpdateL
         vShadow.setVisibility(state == 0f ? View.INVISIBLE : View.VISIBLE);
 
         toolbar.setVisibility(state == 0f ? View.INVISIBLE : View.VISIBLE);
-//        if (Build.VERSION.SDK_INT > 10)
-//            toolbar.setAlpha(state);
+        if (Build.VERSION.SDK_INT > 10)
+            toolbar.setAlpha(state);
+
+        Log.d(getClass().getName(), "onPositionUpdate: " + state);
 
         if (isLeaving && state == 0f) {
             flicAdapter.setActivated(false);

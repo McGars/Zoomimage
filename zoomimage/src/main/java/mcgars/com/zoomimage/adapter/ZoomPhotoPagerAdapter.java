@@ -66,7 +66,7 @@ public class ZoomPhotoPagerAdapter
     }
 
     private void setRecyclerAnimator(final RecyclerView recyclerView) {
-        initSettingsAnimator(new ViewTransitionBuilder<Integer>()
+        initSettingsAnimator((ViewTransitionBuilder<Integer>) new ViewTransitionBuilder<Integer>()
                 .fromRecyclerView(recyclerView, new SimpleViewsTracker() {
                     @Override
                     public View getViewForPosition(int position) {
