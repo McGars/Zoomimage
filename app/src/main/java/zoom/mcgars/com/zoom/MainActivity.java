@@ -69,6 +69,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         zoomImageController.enter(0);
     }
 
+    @Override
+    public void onBackPressed() {
+        if(zoomImageController.onBackPressed())
+            return;
+        super.onBackPressed();
+    }
+
     /**
      * Display
      * @param photo
