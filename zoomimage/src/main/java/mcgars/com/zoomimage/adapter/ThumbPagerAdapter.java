@@ -4,15 +4,18 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.List;
+
+import mcgars.com.zoomimage.ui.ZoomHolder;
 
 
 /**
  * Author: Artemiy Garin
  * Date: 03.09.13
  */
-public class ThumbPagerAdapter extends PagerAdapter {
+public class ThumbPagerAdapter extends PagerAdapter implements ZoomHolder {
 
     private List<View> views;
     /**
@@ -86,5 +89,10 @@ public class ThumbPagerAdapter extends PagerAdapter {
         if(views == null)
             return null;
         return views.get(currentItem);
+    }
+
+    @Override
+    public ImageView getImage() {
+        return null;
     }
 }

@@ -19,6 +19,7 @@ import java.util.List;
 
 import mcgars.com.zoomimage.ZoomImageController;
 import mcgars.com.zoomimage.adapter.ZoomPhotoPagerAdapter;
+import mcgars.com.zoomimage.fabric.AnimatorBuilder;
 import mcgars.com.zoomimage.ui.Displayer;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -91,8 +92,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         int position = container.indexOfChild(v);
-        zoomImageController.setPhotos(views, urlImages);
-        zoomImageController.enter(position);
+        zoomImageController.setPhotos(AnimatorBuilder.getInstance().from(views), urlImages);
+        zoomImageController.show(position);
     }
 
     @Override

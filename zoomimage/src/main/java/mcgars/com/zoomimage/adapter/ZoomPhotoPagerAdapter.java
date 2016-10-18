@@ -2,7 +2,6 @@ package mcgars.com.zoomimage.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +12,15 @@ import com.alexvasilkov.gestures.commons.RecyclePagerAdapter;
 import com.alexvasilkov.gestures.transition.SimpleViewsTracker;
 import com.alexvasilkov.gestures.transition.ViewsCoordinator;
 import com.alexvasilkov.gestures.transition.ViewsTransitionAnimator;
-import com.alexvasilkov.gestures.transition.ViewsTransitionBuilder;
 import com.alexvasilkov.gestures.views.GestureImageView;
 
 import java.util.List;
 
 import mcgars.com.zoomimage.R;
-import mcgars.com.zoomimage.listeners.ViewTransitionBuilder;
+import mcgars.com.zoomimage.ZoomImageController;
+import mcgars.com.zoomimage.fabric.AMBuilder;
+import mcgars.com.zoomimage.fabric.ViewTransitionBuilder;
 import mcgars.com.zoomimage.ui.Displayer;
-import mcgars.com.zoomimage.ui.ZoomHolder;
 
 public class ZoomPhotoPagerAdapter
         extends RecyclePagerAdapter<ZoomPhotoPagerAdapter.ViewHolder> {
@@ -30,7 +29,7 @@ public class ZoomPhotoPagerAdapter
     private final ViewPager viewPager;
     private final Displayer displayer;
 
-    private ViewPager mViewPager;
+    private ViewPager intoViewPager;
     private ViewsTransitionAnimator<Integer> mAnimator;
 //    private DisplayImageOptions params;
     private List<? extends IPhoto> mPhotos;
@@ -49,66 +48,8 @@ public class ZoomPhotoPagerAdapter
         init(viewPager);
     }
 
-    public void from(ImageView imageView) {
-        setImageAnimator(imageView);
-    }
-
-    public void from(List<ImageView> imageView) {
-        setImageAnimator(imageView);
-    }
-
-    public void from(ViewPager fromViewPager) {
-        setPagerAnimator(fromViewPager);
-    }
-
-    public void from(RecyclerView recyclerView) {
-        setRecyclerAnimator(recyclerView);
-    }
-
-    private void setRecyclerAnimator(final RecyclerView recyclerView) {
-        initSettingsAnimator((ViewTransitionBuilder<Integer>) new ViewTransitionBuilder<Integer>()
-                .fromRecyclerView(recyclerView, new SimpleViewsTracker() {
-                    @Override
-                    public View getViewForPosition(int position) {
-                        ZoomHolder holder = (ZoomHolder) recyclerView.findViewHolderForAdapterPosition(position);
-                        return holder == null ? null : holder.getImage();
-                    }
-                }));
-    }
-
-    private void setImageAnimator(final ImageView imageView) {
-        initSettingsAnimator(new ViewTransitionBuilder<Integer>()
-                .fromImageView(imageView, new SimpleViewsTracker() {
-                    @Override
-                    public View getViewForPosition(int position) {
-                        return imageView;
-                    }
-                }));
-    }
-
-    private void setImageAnimator(final List<ImageView> imageViews) {
-        initSettingsAnimator(new ViewTransitionBuilder<Integer>()
-                .fromImageView(imageViews, new SimpleViewsTracker() {
-                    @Override
-                    public View getViewForPosition(int position) {
-                        return imageViews.get(position);
-                    }
-                }));
-    }
-
-    private void setPagerAnimator(final ViewPager fromViewPager) {
-        initSettingsAnimator(new ViewTransitionBuilder<Integer>()
-                .fromViewPager(fromViewPager, new SimpleViewsTracker() {
-                    @Override
-                    public View getViewForPosition(int position) {
-                        ImageView v = (ImageView) ((ThumbPagerAdapter)fromViewPager.getAdapter()).getView(position);
-                        return v;
-                    }
-                }));
-    }
-
     private void initSettingsAnimator(ViewTransitionBuilder<Integer> builder) {
-        mAnimator = builder.intoViewPager(mViewPager, new SimpleViewsTracker() {
+        mAnimator = builder.intoViewPager(intoViewPager, new SimpleViewsTracker() {
             @Override
             public View getViewForPosition(int position) {
                 RecyclePagerAdapter.ViewHolder holder = getViewHolder(
@@ -133,12 +74,12 @@ public class ZoomPhotoPagerAdapter
         });
     }
 
-    private void init(ViewPager viewPager) {
-        mViewPager = viewPager;
-//        DisplayImageOptions.Builder options = DefaultApplication.getImageLoaderOptionsBuilder();
-//        options.displayer(new SimpleBitmapDisplayer());
-//        options.resetViewBeforeLoading(false);
-//        params = options.build();
+    /**
+     * Init in {@link ZoomImageController#init()}
+     * @param intoViewPager for show full size images
+     */
+    private void init(ViewPager intoViewPager) {
+        this.intoViewPager = intoViewPager;
     }
 
     public void setPositionAnimationListener(ViewPositionAnimator.PositionUpdateListener positionAnimationListener){
@@ -185,7 +126,7 @@ public class ZoomPhotoPagerAdapter
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup container) {
         final ViewHolder holder = new ViewHolder(container);
         holder.image.getController().getSettings().setFillViewport(true).setMaxZoom(3f);
-        holder.image.getController().enableScrollInViewPager(mViewPager);
+        holder.image.getController().enableScrollInViewPager(intoViewPager);
 //        holder.image.getController().setOnGesturesListener(gestureListener);
         return holder;
     }
@@ -204,19 +145,6 @@ public class ZoomPhotoPagerAdapter
         IPhoto photo = mPhotos.get(position);
 
         displayer.displayImage(photo, holder);
-
-
-
-//        ImageLoader.getInstance().displayImage(photo.getOriginal(), holder.image, params, new SimpleImageLoadingListener(){
-//            @Override
-//            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-//                holder.progress.setVisibility(View.GONE);
-//                if (holder.gesturesDisabled) {
-//                    holder.image.getController().getSettings().enableGestures();
-//                    holder.gesturesDisabled = false;
-//                }
-//            }
-//        });
     }
 
 
@@ -238,6 +166,10 @@ public class ZoomPhotoPagerAdapter
 
     public static GestureImageView getImage(RecyclePagerAdapter.ViewHolder holder) {
         return ((ViewHolder) holder).image;
+    }
+
+    public void from(AMBuilder builder) {
+        initSettingsAnimator(builder.getBuilder());
     }
 
     public static class ViewHolder extends RecyclePagerAdapter.ViewHolder {

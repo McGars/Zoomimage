@@ -1,19 +1,18 @@
-package mcgars.com.zoomimage.listeners;
+package mcgars.com.zoomimage.fabric;
 
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 import com.alexvasilkov.gestures.transition.ViewsTracker;
 import com.alexvasilkov.gestures.transition.ViewsTransitionAnimator;
 import com.alexvasilkov.gestures.transition.ViewsTransitionBuilder;
-import com.alexvasilkov.gestures.transition.internal.FromListViewListener;
-import com.alexvasilkov.gestures.transition.internal.FromRecyclerViewListener;
-import com.alexvasilkov.gestures.transition.internal.IntoViewPagerListener;
 
 import java.util.List;
+
+import mcgars.com.zoomimage.listeners.FromImageViewListener;
+import mcgars.com.zoomimage.listeners.FromImagesViewListener;
+import mcgars.com.zoomimage.listeners.FromViewPagerListener;
 
 /**
  * Created by Феофилактов on 22.03.2016.
