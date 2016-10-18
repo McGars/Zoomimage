@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -23,16 +24,21 @@ import mcgars.com.zoomimage.ui.Displayer;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ZoomImageController zoomImageController;
-    private ImageView ivTest;
+
+    List<String> urlImages = new ArrayList<>();
+    List<ImageView> views = new ArrayList<>();
+    private ViewGroup activityMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        activityMain = (ViewGroup) findViewById(R.id.activity_main);
+
         initImageLoader(MainActivity.this);
 
-        ivTest = (ImageView) findViewById(R.id.ivTest);
+        fitImages();
 
         zoomImageController = new ZoomImageController(this, new Displayer() {
             // load fullscreen image
@@ -54,19 +60,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
 
-        ImageLoader.getInstance().displayImage("https://graceologydotcom.files.wordpress.com/2014/04/perma-glory.jpg", ivTest);
-        ivTest.setOnClickListener(this);
+//        ImageLoader.getInstance().displayImage("https://graceologydotcom.files.wordpress.com/2014/04/perma-glory.jpg", ivTest);
+    }
+
+    private void fitImages() {
+        urlImages.add("http://images4.fanpop.com/image/photos/23100000/-Nature-god-the-creator-23175770-670-446.jpg");
+        urlImages.add("http://fantasyartdesign.com/free-wallpapers/imgs/mid/decktop-Dino-game-m.jpg");
+        urlImages.add("http://images4.fanpop.com/image/photos/18200000/Lovely-nature-god-the-creator-18227423-500-333.jpg");
+
+        views.add((ImageView) findViewById(R.id.ivTest));
+        views.add((ImageView) findViewById(R.id.ivTest2));
+        views.add((ImageView) findViewById(R.id.ivTest3));
+
+        for (ImageView view : views) {
+            view.setOnClickListener(this);
+        }
     }
 
     @Override
     public void onClick(View v) {
+
+        int position = activityMain.indexOfChild(v);
+
         List<ZoomPhotoPagerAdapter.IPhoto> list = new ArrayList<>();
         list.add(new ZoomPhotoPagerAdapter.Photo(
                 "https://graceologydotcom.files.wordpress.com/2014/04/perma-glory.jpg",
-                "https://graceologydotcom.files.wordpress.com/2014/04/perma-glory.jpg"
+                "http://fantasyartdesign.com/free-wallpapers/imgs/mid/decktop-Dino-game-m.jpg"
         ));
-        zoomImageController.setPhotos(ivTest, list);
-        zoomImageController.enter(0);
+        zoomImageController.setPhotos(views, list);
+        zoomImageController.enter(position);
     }
 
     @Override

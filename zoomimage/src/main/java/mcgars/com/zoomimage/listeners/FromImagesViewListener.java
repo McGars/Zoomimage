@@ -9,19 +9,21 @@ import com.alexvasilkov.gestures.transition.ViewsCoordinator;
 import com.alexvasilkov.gestures.transition.ViewsTracker;
 import com.alexvasilkov.gestures.transition.ViewsTransitionAnimator;
 
-public class FromImageViewListener<ID> implements ViewsCoordinator.OnRequestViewListener<ID> {
+import java.util.List;
+
+public class FromImagesViewListener<ID> implements ViewsCoordinator.OnRequestViewListener<ID> {
 
 
-    private final ImageView imageView;
+    private final List<ImageView> images;
     private final ViewsTracker<ID> mTracker;
     private final ViewsTransitionAnimator<ID> mAnimator;
 
     private ID mId;
 
-    public FromImageViewListener(@NonNull ImageView imageView,
-                                 @NonNull ViewsTracker<ID> tracker,
-                                 @NonNull ViewsTransitionAnimator<ID> animator) {
-        this.imageView = imageView;
+    public FromImagesViewListener(@NonNull List<ImageView> imageView,
+                                  @NonNull ViewsTracker<ID> tracker,
+                                  @NonNull ViewsTransitionAnimator<ID> animator) {
+        this.images = imageView;
         mTracker = tracker;
         mAnimator = animator;
         mAnimator.addPositionUpdateListener(new UpdateListener());
@@ -38,15 +40,19 @@ public class FromImageViewListener<ID> implements ViewsCoordinator.OnRequestView
             return; // Nothing we can do
         }
 
+        ImageView imageView = images.get(position);
         mAnimator.setFromView(mId, imageView);
     }
 
     private class UpdateListener implements ViewPositionAnimator.PositionUpdateListener {
         @Override
         public void onPositionUpdate(float state, boolean isLeaving) {
+            int position = mTracker.getPositionForId(mId);
             if (state == 0f && isLeaving) {
                 mId = null;
             }
+
+            ImageView imageView = images.get(position);
             imageView.setVisibility(state == 0f && isLeaving ? View.VISIBLE : View.INVISIBLE);
         }
     }

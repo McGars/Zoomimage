@@ -29,11 +29,8 @@ public class ZoomPhotoPagerAdapter
     private static final long PROGRESS_DELAY = 300L;
     private final ViewPager viewPager;
     private final Displayer displayer;
-    private ImageView imageView;
 
     private ViewPager mViewPager;
-    private RecyclerView recyclerView;
-    private ViewPager fromViewPager;
     private ViewsTransitionAnimator<Integer> mAnimator;
 //    private DisplayImageOptions params;
     private List<? extends IPhoto> mPhotos;
@@ -53,83 +50,75 @@ public class ZoomPhotoPagerAdapter
     }
 
     public void from(ImageView imageView) {
-        this.imageView = imageView;
-        setImageAnimator();
+        setImageAnimator(imageView);
+    }
+
+    public void from(List<ImageView> imageView) {
+        setImageAnimator(imageView);
     }
 
     public void from(ViewPager fromViewPager) {
-        this.fromViewPager = fromViewPager;
-        setPagerAnimator();
+        setPagerAnimator(fromViewPager);
     }
 
     public void from(RecyclerView recyclerView) {
-        this.recyclerView = recyclerView;
-        setRecyclerAnimator();
+        setRecyclerAnimator(recyclerView);
     }
 
-    private void setRecyclerAnimator() {
-        mAnimator = new ViewsTransitionBuilder<Integer>()
+    private void setRecyclerAnimator(final RecyclerView recyclerView) {
+        initSettingsAnimator(new ViewTransitionBuilder<Integer>()
                 .fromRecyclerView(recyclerView, new SimpleViewsTracker() {
                     @Override
                     public View getViewForPosition(int position) {
                         ZoomHolder holder = (ZoomHolder) recyclerView.findViewHolderForAdapterPosition(position);
                         return holder == null ? null : holder.getImage();
                     }
-                })
-                .intoViewPager(mViewPager, new SimpleViewsTracker() {
-                    @Override
-                    public View getViewForPosition(int position) {
-                        RecyclePagerAdapter.ViewHolder holder = getViewHolder(
-                                position);
-                        return holder == null ? null : ZoomPhotoPagerAdapter.getImage(holder);
-                    }
-                })
-                .build();
-        initSettingsAnimator();
+                }));
     }
 
-    private void setImageAnimator() {
-        mAnimator = new ViewTransitionBuilder<Integer>()
+    private void setImageAnimator(final ImageView imageView) {
+        initSettingsAnimator(new ViewTransitionBuilder<Integer>()
                 .fromImageView(imageView, new SimpleViewsTracker() {
                     @Override
                     public View getViewForPosition(int position) {
                         return imageView;
                     }
-                })
-                .intoViewPager(mViewPager, new SimpleViewsTracker() {
-                    @Override
-                    public View getViewForPosition(int position) {
-                        RecyclePagerAdapter.ViewHolder holder = getViewHolder(
-                                position);
-                        return holder == null ? null : ZoomPhotoPagerAdapter.getImage(holder);
-                    }
-                })
-                .build();
-        initSettingsAnimator();
+                }));
     }
 
-    private void setPagerAnimator() {
-        mAnimator = new ViewTransitionBuilder<Integer>()
+    private void setImageAnimator(final List<ImageView> imageViews) {
+        initSettingsAnimator(new ViewTransitionBuilder<Integer>()
+                .fromImageView(imageViews, new SimpleViewsTracker() {
+                    @Override
+                    public View getViewForPosition(int position) {
+                        return imageViews.get(position);
+                    }
+                }));
+    }
+
+    private void setPagerAnimator(final ViewPager fromViewPager) {
+        initSettingsAnimator(new ViewTransitionBuilder<Integer>()
                 .fromViewPager(fromViewPager, new SimpleViewsTracker() {
                     @Override
                     public View getViewForPosition(int position) {
                         ImageView v = (ImageView) ((ThumbPagerAdapter)fromViewPager.getAdapter()).getView(position);
                         return v;
                     }
-                })
-                .intoViewPager(mViewPager, new SimpleViewsTracker() {
-                    @Override
-                    public View getViewForPosition(int position) {
-                        RecyclePagerAdapter.ViewHolder holder = getViewHolder(
-                                position);
-                        return holder == null ? null : ZoomPhotoPagerAdapter.getImage(holder);
-                    }
-                })
-                .build();
-        initSettingsAnimator();
+                }));
     }
 
-    private void initSettingsAnimator() {
+    private void initSettingsAnimator(ViewTransitionBuilder<Integer> builder) {
+        mAnimator = builder.intoViewPager(mViewPager, new SimpleViewsTracker() {
+            @Override
+            public View getViewForPosition(int position) {
+                RecyclePagerAdapter.ViewHolder holder = getViewHolder(
+                        position);
+                return holder == null ? null : ZoomPhotoPagerAdapter.getImage(holder);
+            }
+        })
+        .build();
+
+
         mAnimator.addPositionUpdateListener(positionAnimationListener);
         mAnimator.setReadyListener(new ViewsCoordinator.OnViewsReadyListener<Integer>() {
             @Override

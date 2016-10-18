@@ -12,6 +12,8 @@ import com.alexvasilkov.gestures.transition.internal.FromListViewListener;
 import com.alexvasilkov.gestures.transition.internal.FromRecyclerViewListener;
 import com.alexvasilkov.gestures.transition.internal.IntoViewPagerListener;
 
+import java.util.List;
+
 /**
  * Created by Феофилактов on 22.03.2016.
  */
@@ -39,6 +41,11 @@ public class ViewTransitionBuilder<ID> {
     public ViewTransitionBuilder<ID> fromImageView(@NonNull ImageView imageView,
                                                     @NonNull ViewsTracker<ID> helper) {
         animator.setFromListener(new FromImageViewListener<>(imageView, helper, animator));
+        return this;
+    }
+    public ViewTransitionBuilder<ID> fromImageView(@NonNull List<ImageView> imageViews,
+                                                   @NonNull ViewsTracker<ID> helper) {
+        animator.setFromListener(new FromImagesViewListener<>(imageViews, helper, animator));
         return this;
     }
 

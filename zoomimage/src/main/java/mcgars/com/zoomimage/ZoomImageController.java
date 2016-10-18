@@ -1,6 +1,7 @@
 package mcgars.com.zoomimage;
 
 import android.app.Activity;
+import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -45,7 +46,7 @@ public class ZoomImageController implements ViewPositionAnimator.PositionUpdateL
         ViewGroup decorView = (ViewGroup) activity.findViewById(android.R.id.content);
         if (decorView != null) {
             root = decorView;
-            zoomPager = (ViewPager) root.findViewById(R.id.flickrPager);
+            zoomPager = (ViewPager) root.findViewById(R.id.zoomFullPager);
             if(zoomPager !=null) {
                 initViews();
                 return;
@@ -54,7 +55,7 @@ public class ZoomImageController implements ViewPositionAnimator.PositionUpdateL
                 View v = inflater.inflate(R.layout.zoom_view_image, root, false);
                 root.addView(v);
 
-                zoomPager = (ViewPager) v.findViewById(R.id.flickrPager);
+                zoomPager = (ViewPager) v.findViewById(R.id.zoomFullPager);
             }
             initViews();
         }
@@ -138,6 +139,13 @@ public class ZoomImageController implements ViewPositionAnimator.PositionUpdateL
         return this;
     }
 
+    public ZoomImageController setPhotos(List<ImageView> from, List<? extends ZoomPhotoPagerAdapter.IPhoto> data) {
+        initFlickrAdapter();
+        flicAdapter.from(from);
+        setPhotos(data);
+        return this;
+    }
+
     public ZoomImageController setPhotos(ViewPager from, List<? extends ZoomPhotoPagerAdapter.IPhoto> data) {
         initFlickrAdapter();
         flicAdapter.from(from);
@@ -159,6 +167,9 @@ public class ZoomImageController implements ViewPositionAnimator.PositionUpdateL
 
     protected void initDecorMargins() {
         // Adjusting margins and paddings to fit translucent decor
-        DecorUtils.marginForStatusBar(toolbar);
+        if(Build.VERSION.SDK_INT >= 16 ) {
+        if(root.getChildAt(0).getFitsSystemWindows())
+            DecorUtils.marginForStatusBar(toolbar);
+        }
     }
 }
