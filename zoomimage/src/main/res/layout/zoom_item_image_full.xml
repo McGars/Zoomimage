@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.alexvasilkov.gestures.views.GestureImageView
+    <mcgars.com.zoomimage.utils.SnappyImageViewer
         android:id="@+id/flickr_full_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
