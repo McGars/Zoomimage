@@ -107,8 +107,9 @@ public class ZoomPhotoPagerAdapter
     /**
      * To prevent ViewPager from holding heavy views (with bitmaps)  while it is not showing
      * we may just pretend there are no items in this adapter ("activate" = false).
-     * But once we need to run opening animation we should "activate" this adapter again.<br/>
+     * But once we need to run opening animation we should "activate" this adapter again.
      * Adapter is not activated by default.
+     * @param activated false by default
      */
     public void setActivated(boolean activated) {
         if (mActivated != activated) {

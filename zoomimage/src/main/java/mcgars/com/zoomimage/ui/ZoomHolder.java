@@ -11,7 +11,7 @@ public interface ZoomHolder {
      * ignoring position
      * For adapters return ImageView
      * @param position current position of image
-     * @return
+     * @return ImageView will be zoomed
      */
     ImageView getImage(int position);
 }
