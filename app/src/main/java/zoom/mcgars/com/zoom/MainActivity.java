@@ -45,13 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // load fullscreen image
             @Override
             public void displayImage(ZoomPhotoPagerAdapter.IPhoto photo, ZoomPhotoPagerAdapter.ViewHolder v) {
-                displayImg(photo, v.image, v);
-            }
-
-            // load preview image
-            @Override
-            public void displayImage(ZoomPhotoPagerAdapter.IPhoto photo, ImageView v) {
-                displayImg(photo, v, null);
+                displayImg(photo, v);
             }
 
             @Override
@@ -112,15 +106,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * Display
      * @param photo
-     * @param imageView
      * @param v
      */
-    private void displayImg(ZoomPhotoPagerAdapter.IPhoto photo, ImageView imageView, final ZoomPhotoPagerAdapter.ViewHolder v) {
-        ImageLoader.getInstance().displayImage(photo.getOriginal(), imageView, new SimpleImageLoadingListener() {
+    private void displayImg(ZoomPhotoPagerAdapter.IPhoto photo, final ZoomPhotoPagerAdapter.ViewHolder v) {
+        ImageLoader.getInstance().displayImage(photo.getOriginal(), v.image, new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                if(v!=null)
-                    v.loadComplete();
+                v.loadComplete();
             }
         });
     }

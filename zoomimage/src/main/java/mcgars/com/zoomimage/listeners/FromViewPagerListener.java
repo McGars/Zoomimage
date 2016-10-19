@@ -1,9 +1,7 @@
 package mcgars.com.zoomimage.listeners;
 
-import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 
 import com.alexvasilkov.gestures.animation.ViewPositionAnimator;
@@ -13,14 +11,11 @@ import com.alexvasilkov.gestures.transition.ViewsTransitionAnimator;
 
 public class FromViewPagerListener<ID> implements ViewsCoordinator.OnRequestViewListener<ID> {
 
-    private static final Rect LOCATION_PARENT = new Rect(), LOCATION = new Rect();
-
     private final ViewPager mViewPager;
     private final ViewsTracker<ID> mTracker;
     private final ViewsTransitionAnimator<ID> mAnimator;
 
     private ID mId;
-    private boolean mScrollHalfVisibleItems;
 
     public FromViewPagerListener(@NonNull ViewPager listView,
                                  @NonNull ViewsTracker<ID> tracker,
@@ -29,7 +24,6 @@ public class FromViewPagerListener<ID> implements ViewsCoordinator.OnRequestView
         mTracker = tracker;
         mAnimator = animator;
 
-//        mViewPager.addOnPageChangeListener(new ScrollListener());
         mAnimator.addPositionUpdateListener(new UpdateListener());
     }
 
@@ -44,44 +38,11 @@ public class FromViewPagerListener<ID> implements ViewsCoordinator.OnRequestView
             return; // Nothing we can do
         }
 
-        mViewPager.setCurrentItem(position, false); //Where "2" is the position you want to go
+        mViewPager.setCurrentItem(position, false); //Where "position" is the position you want to go
 
-//        mViewPager.setCurrentItem(position); //Where "2" is the position you want to go
         View view = mTracker.getViewForPosition(position);
         mAnimator.setFromView(mId, view);
-
-
-//        if (mScrollHalfVisibleItems) {
-//            mViewPager.getGlobalVisibleRect(LOCATION_PARENT);
-//            LOCATION_PARENT.left += mViewPager.getPaddingLeft();
-//            LOCATION_PARENT.right -= mViewPager.getPaddingRight();
-//            LOCATION_PARENT.top += mViewPager.getPaddingTop();
-//            LOCATION_PARENT.bottom -= mViewPager.getPaddingBottom();
-//
-//            view.getGlobalVisibleRect(LOCATION);
-//            if (!LOCATION_PARENT.contains(LOCATION)
-//                    || view.getWidth() > LOCATION.width()
-//                    || view.getHeight() > LOCATION.height()) {
-//                mViewPager.setCurrentItem(position);
-//            }
-//        }
     }
-
-//    private class ScrollListener extends ViewPager.SimpleOnPageChangeListener {
-//
-//        @Override
-//        public void onPageSelected(int position) {
-//            if (mId == null) {
-//                return; // Nothing to do
-//            }
-//            if (mId.equals(mTracker.getIdForPosition(position))) {
-//                View from = mTracker.getViewForPosition(position);
-//                if (from != null) {
-//                    mAnimator.setFromView(mId, from);
-//                }
-//            }
-//        }
-//    }
 
     private class UpdateListener implements ViewPositionAnimator.PositionUpdateListener {
         @Override
@@ -90,7 +51,6 @@ public class FromViewPagerListener<ID> implements ViewsCoordinator.OnRequestView
                 mId = null;
             }
             mViewPager.setVisibility(state == 1f && !isLeaving ? View.INVISIBLE : View.VISIBLE);
-            mScrollHalfVisibleItems = state == 1f; // Only scroll if we in full mode
         }
     }
 

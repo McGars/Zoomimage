@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -165,6 +165,9 @@ public class ZoomImageController implements ViewPositionAnimator.PositionUpdateL
     public void show(int position) {
         zoomAdapter.setActivated(true);
         zoomAdapter.getAnimator().enter(position, true);
+        // fixed, if firs page onPageSelected not trigger
+        if(position == 0)
+            setTitle(position);
     }
 
     protected void initDecorMargins() {
@@ -182,10 +185,17 @@ public class ZoomImageController implements ViewPositionAnimator.PositionUpdateL
 
     @Override
     public void onPageSelected(int position) {
+        setTitle(position);
+    }
+
+    protected void setTitle(int position) {
         ZoomPhotoPagerAdapter.IPhoto item = zoomAdapter.getPhoto(position);
-        if (item != null) {
-            toolbar.setTitle(item.getText());
+        String title = (position + 1) + " / " + zoomAdapter.getCount();
+        // (1 / 3) Best image
+        if (item != null && !TextUtils.isEmpty(item.getText())) {
+            title = "(" + title + ") " + item.getText();
         }
+        toolbar.setTitle(title);
     }
 
     @Override

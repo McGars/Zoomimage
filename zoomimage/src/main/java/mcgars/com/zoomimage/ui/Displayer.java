@@ -1,6 +1,5 @@
 package mcgars.com.zoomimage.ui;
 
-import android.view.View;
 import android.widget.ImageView;
 
 import mcgars.com.zoomimage.adapter.ZoomPhotoPagerAdapter;
@@ -11,6 +10,5 @@ import mcgars.com.zoomimage.adapter.ZoomPhotoPagerAdapter;
 
 public interface Displayer {
     void displayImage(ZoomPhotoPagerAdapter.IPhoto photo, ZoomPhotoPagerAdapter.ViewHolder v);
-    void displayImage(ZoomPhotoPagerAdapter.IPhoto photo, ImageView v);
     void cancel(ImageView v);
 }

@@ -9,7 +9,6 @@ import com.alexvasilkov.gestures.transition.SimpleViewsTracker;
 
 import java.util.List;
 
-import mcgars.com.zoomimage.adapter.ThumbPagerAdapter;
 import mcgars.com.zoomimage.ui.ZoomHolder;
 
 /**
@@ -55,8 +54,7 @@ public class AnimatorBuilder implements AMBuilder {
                 .fromViewPager(fromViewPager, new SimpleViewsTracker() {
                     @Override
                     public View getViewForPosition(int position) {
-                        ImageView v = (ImageView) ((ThumbPagerAdapter)fromViewPager.getAdapter()).getView(position);
-                        return v;
+                        return ((ZoomHolder)(fromViewPager.getAdapter())).getImage(position);
                     }
                 }));
         return this;
@@ -68,7 +66,7 @@ public class AnimatorBuilder implements AMBuilder {
                     @Override
                     public View getViewForPosition(int position) {
                         ZoomHolder holder = (ZoomHolder) recyclerView.findViewHolderForAdapterPosition(position);
-                        return holder == null ? null : holder.getImage();
+                        return holder == null ? null : holder.getImage(position);
                     }
                 }));
         return this;
