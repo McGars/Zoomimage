@@ -1,6 +1,7 @@
 package mcgars.com.zoomimage;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -113,6 +114,7 @@ public class ZoomImageController implements ViewPositionAnimator.PositionUpdateL
         vShadow.setVisibility(state == 0f ? View.INVISIBLE : View.VISIBLE);
 
         toolbar.setVisibility(state == 0f ? View.INVISIBLE : View.VISIBLE);
+//        toolbar.setTitleTextColor(Color.WHITE);
         if (Build.VERSION.SDK_INT > 10)
             toolbar.setAlpha(state);
 
