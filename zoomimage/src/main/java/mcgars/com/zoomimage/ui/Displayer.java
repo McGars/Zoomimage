@@ -9,6 +9,16 @@ import mcgars.com.zoomimage.adapter.ZoomPhotoPagerAdapter;
  */
 
 public interface Displayer {
+    /**
+     * Show image with your own libs or methods
+     * @param photo object
+     * @param v holder from adapter who show full image
+     */
     void displayImage(ZoomPhotoPagerAdapter.IPhoto photo, ZoomPhotoPagerAdapter.ViewHolder v);
-    void cancel(ImageView v);
+
+    /**
+     * Called when closing fool image
+     * @param imageView ImageView
+     */
+    void cancel(ImageView imageView);
 }

@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         int position = container.indexOfChild(v);
-        zoomImageController.setPhotos(AnimatorBuilder.getInstance().from(views), urlImages);
+        zoomImageController.setPhotos(AnimatorBuilder.builder().from(views), urlImages);
         zoomImageController.show(position);
     }
 

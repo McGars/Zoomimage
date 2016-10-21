@@ -20,7 +20,7 @@ public class AnimatorBuilder implements AMBuilder {
 
     private ViewsTransitionBuilder<Integer> builder;
 
-    public static AnimatorBuilder getInstance() {
+    public static AnimatorBuilder builder() {
         return new AnimatorBuilder();
     }
 
