@@ -12,6 +12,7 @@ import com.alexvasilkov.gestures.commons.RecyclePagerAdapter;
 import com.alexvasilkov.gestures.transition.SimpleViewsTracker;
 import com.alexvasilkov.gestures.transition.ViewsCoordinator;
 import com.alexvasilkov.gestures.transition.ViewsTransitionAnimator;
+import com.alexvasilkov.gestures.transition.ViewsTransitionBuilder;
 import com.alexvasilkov.gestures.views.GestureImageView;
 
 import java.util.List;
@@ -19,7 +20,6 @@ import java.util.List;
 import mcgars.com.zoomimage.R;
 import mcgars.com.zoomimage.ZoomImageController;
 import mcgars.com.zoomimage.fabric.AMBuilder;
-import mcgars.com.zoomimage.fabric.ViewTransitionBuilder;
 import mcgars.com.zoomimage.ui.Displayer;
 
 public class ZoomPhotoPagerAdapter
@@ -48,7 +48,7 @@ public class ZoomPhotoPagerAdapter
         init(viewPager);
     }
 
-    private void initSettingsAnimator(ViewTransitionBuilder<Integer> builder) {
+    private void initSettingsAnimator(ViewsTransitionBuilder<Integer> builder) {
         mAnimator = builder.intoViewPager(intoViewPager, new SimpleViewsTracker() {
             @Override
             public View getViewForPosition(int position) {

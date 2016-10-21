@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.alexvasilkov.gestures.transition.SimpleViewsTracker;
+import com.alexvasilkov.gestures.transition.ViewsTransitionBuilder;
 
 import java.util.List;
 
@@ -17,13 +18,13 @@ import mcgars.com.zoomimage.ui.ZoomHolder;
 
 public class AnimatorBuilder implements AMBuilder {
 
-    ViewTransitionBuilder<Integer> builder;
+    private ViewsTransitionBuilder<Integer> builder;
 
     public static AnimatorBuilder getInstance() {
         return new AnimatorBuilder();
     }
 
-    public ViewTransitionBuilder<Integer> getBuilder() {
+    public ViewsTransitionBuilder<Integer> getBuilder() {
         return builder;
     }
 
@@ -61,7 +62,7 @@ public class AnimatorBuilder implements AMBuilder {
     }
 
     public AMBuilder from(final RecyclerView recyclerView) {
-        setBuilder((ViewTransitionBuilder<Integer>) new ViewTransitionBuilder<Integer>()
+        setBuilder(new ViewTransitionBuilder<Integer>()
                 .fromRecyclerView(recyclerView, new SimpleViewsTracker() {
                     @Override
                     public View getViewForPosition(int position) {
@@ -72,7 +73,7 @@ public class AnimatorBuilder implements AMBuilder {
         return this;
     }
 
-    protected void setBuilder(ViewTransitionBuilder<Integer> builder) {
+    protected void setBuilder(ViewsTransitionBuilder<Integer> builder) {
         this.builder = builder;
     }
 }
