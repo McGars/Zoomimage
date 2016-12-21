@@ -1,7 +1,6 @@
 package mcgars.com.zoomimage;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -74,9 +73,9 @@ public class ZoomImageController implements ViewPositionAnimator.PositionUpdateL
     }
 
     private void initViews() {
-        back = root.findViewById(R.id.flickrFullBackground);
-        toolbar = (Toolbar) root.findViewById(R.id.flickrFullToolbar);
-        vShadow = root.findViewById(R.id.vShadow);
+        back = root.findViewById(R.id.zoomFullBackground);
+        toolbar = (Toolbar) root.findViewById(R.id.zoomFullToolbar);
+        vShadow = root.findViewById(R.id.vZoomShadow);
 
         zoomPager.addOnPageChangeListener(this);
     }
