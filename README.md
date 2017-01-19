@@ -5,7 +5,7 @@ Based on https://github.com/alexvasilkov/GestureViews
 [![Video](https://i.ytimg.com/vi/liuGlyL95Gc/2.jpg?time=1477051509642)](https://youtu.be/liuGlyL95Gc "Video")
 
 ```gradle
-compile 'com.github.msgars:ZoomImage:0.0.3'
+compile 'com.github.msgars:ZoomImage:0.0.6'
 ```
 
 Simple use, first init
