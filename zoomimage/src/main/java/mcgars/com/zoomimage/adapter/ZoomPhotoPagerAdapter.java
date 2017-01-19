@@ -118,6 +118,10 @@ public class ZoomPhotoPagerAdapter
         }
     }
 
+    public boolean isActivated() {
+        return mActivated;
+    }
+
     @Override
     public int getCount() {
         return !mActivated || mPhotos == null ? 0 : mPhotos.size();
