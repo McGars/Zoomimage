@@ -5,24 +5,22 @@ Based on https://github.com/alexvasilkov/GestureViews
 [![Video](https://i.ytimg.com/vi/liuGlyL95Gc/2.jpg?time=1477051509642)](https://youtu.be/liuGlyL95Gc "Video")
 
 ```gradle
-compile 'com.github.msgars:ZoomImage:0.0.6'
+implementation 'com.github.msgars:ZoomImage:0.1.0'
 ```
 
 Simple use, first init
 
-```java
-zoomImageController = new ZoomImageController(this, new Displayer() {
-            // load fullscreen image
-            @Override
-            public void displayImage(ZoomPhotoPagerAdapter.IPhoto photo, ZoomPhotoPagerAdapter.ViewHolder v) {
-                // Show image with your own libs or methods
-            }
+```kotlin
+zoomImageController = ZoomImageController(UiContainer(findViewById(R.id.rootView)), object : Displayer {
+          // load fullscreen image
+          override fun displayImage(photo: IPhoto?, v: ZoomViewHolder) {
+              // display image into v.image
+          }
 
-            @Override
-            public void cancel(ImageView v) {
-                // cancel loading
-            }
-        });
+          override fun cancel(imageView: ImageView) {
+              cancel load
+          }
+      })
 ```
 
 Second set from and array of data
@@ -32,8 +30,8 @@ Second set from and array of data
 - List<ImageView>
 - ListView
 
-```java
-    zoomImageController.setPhotos(AnimatorBuilder.getInstance().from(/*from*/), List<IPhoto>)
+```kotlin
+    zoomImageController.setPhotos(AnimatorBuilder.from(/*from*/), List<IPhoto>)
                        .show(position);
 ```
 

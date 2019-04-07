@@ -1,17 +1,33 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.9'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+def versionN = "0.1.0"
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.3"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
-        minSdkVersion 10
-        targetSdkVersion 24
+        minSdkVersion rootProject.ext.versionSdkMin
+        targetSdkVersion rootProject.ext.versionSdkTarget
         versionCode 1
-        versionName "1.0"
+        versionName versionN
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
     buildTypes {
@@ -23,17 +39,20 @@ android {
 }
 
 dependencies {
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.alexvasilkov:gesture-views:2.2.0'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    testCompile 'junit:junit:4.12'
+    api 'com.alexvasilkov:gesture-views:2.5.2'
+    implementation "androidx.recyclerview:recyclerview:${rootProject.ext.versionSdkAndroid}"
+    implementation "com.google.android.material:material:${rootProject.ext.versionSdkAndroid}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    testImplementation 'junit:junit:4.12'
 }
 
-def filePatch = "$project.rootDir/keybitray.properties";
+def filePatch = "$project.rootDir/keybitray.properties"
 if(file(filePatch).exists()){
+    apply plugin: 'com.novoda.bintray-release'
+
     Properties props = new Properties()
     props.load(new FileInputStream(filePatch))
 
@@ -44,13 +63,17 @@ if(file(filePatch).exists()){
         dryRun=false
         groupId = 'com.github.msgars'
         artifactId = 'ZoomImage'
-        //    repoName = 'ImageFactory'
-        publishVersion = '0.0.6'
-        //    website = 'https://github.com/McGars/ImageFactory'
+        desc = "zoom image from thump to fullsize"
+        userOrg = 'gars'
+        publishVersion = versionN
+        website = 'https://github.com/McGars/Zoomimage'
         //    description = 'View show image from thumb to screensize for android'
         //    repository = "${website}.git"
         //    issueTracker = "https://issues.sonatype.org/browse/OSSRH-17767"
         //    licences = ['Apache-2.0']
     }
 
+}
+repositories {
+    mavenCentral()
 }
